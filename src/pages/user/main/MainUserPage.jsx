@@ -4,16 +4,21 @@ import "./main-page.sass";
 import { useNavigate } from "react-router";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { useQuery } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
 import user from "../../../user.js";
 import "../../login/login.sass";
 import Logo from "../../../component/logo/Logo.jsx";
 import DefaultButton from "../../../component/button/DefaultButton.jsx";
 import configuration from "../../../configuration.js";
+import { addProjects, selectProject } from "../../../redux/projectSelector/projectSlice.js";
 
 function MainUserPage(props) {
   const [projectName, setProjectName] = useState("");
-  const [projects, setProjects] = useState(null);
-  const [selectedProject, setSelectedProject] = useState({});
+  const projects = useSelector((state) => state.projectReducer.projects.all);
+  const dispatch = useDispatch();
+  const setProjects = (project) => dispatch(addProjects(project));
+  const selectedProject = useSelector((state) => state.projectReducer.projects.selected);
+  const setSelectedProject = (project) => dispatch(selectProject(project));
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
@@ -24,7 +29,7 @@ function MainUserPage(props) {
   async function checkProjects() {
     const client = await user.getUserByCookie();
     const json = await (await fetch(`${configuration.api.url}/project?userId=${client.Id}`)).json();
-    setProjects((prev) => [...json]);
+    setProjects([...json]);
   }
 
   useEffect(() => {
@@ -110,14 +115,15 @@ function MainUserPage(props) {
         </div>
         <div style={{ paddingTop: "1rem" }}>
           {projects == null
-            ? <p className="def-size def-color def-family">Loading...</p> : projects.map((item, index) => (
+            ? <p className="def-size def-color def-family">Loading...</p>
+            : projects.map((item, index) => (
               <DefaultButton
                 key={index}
                 text={item.Name}
                 classes={["project"]}
                 onclick={(e) => {
                   const selProject = projects.find((project) => project.Name === e.target.textContent);
-                  setSelectedProject(() => selProject);
+                  setSelectedProject((selProject));
                 }}
               />
             ))}
