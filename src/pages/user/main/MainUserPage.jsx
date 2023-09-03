@@ -114,7 +114,7 @@ function MainUserPage(props) {
           <Logo />
         </div>
         <div style={{ paddingTop: "1rem" }}>
-          {projects == null
+          {projects.length === 0
             ? <p className="def-size def-color def-family">Loading...</p>
             : projects.map((item, index) => (
               <DefaultButton

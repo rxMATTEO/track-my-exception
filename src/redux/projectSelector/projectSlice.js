@@ -10,7 +10,6 @@ export const projectSlice = createSlice({
   },
   reducers: {
     addProjects(state, action) {
-      const projects = state.projects.all;
       state.projects.all = [...action.payload];
     },
     selectProject(state, action) {
