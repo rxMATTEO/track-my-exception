@@ -21,7 +21,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       hash: true,
       filename: "index.html",
-      template: './public/index.html',
+      template: './index.html',
       publicPath: '/',
     }),
     new webpack.HotModuleReplacementPlugin(),

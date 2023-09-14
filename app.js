@@ -19,7 +19,7 @@ app.get('/*', (req, res, next) => {
   if (req.path.includes('api')) {
     return next();
   }
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(__dirname + './index.html');
 });
 
 app.listen(port, () => console.log('Server is started'));
